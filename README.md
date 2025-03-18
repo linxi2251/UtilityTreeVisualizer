@@ -54,6 +54,10 @@ cmake --build .
 - `generate_icons.py` - 用于生成节点图标的Python脚本
 - `icons/` - 应用程序使用的图标
 
+## 界面
+
+![image-20250318132435912](./assets/image-20250318132435912.png)
+
 ## 使用说明
 
 1. 启动应用程序

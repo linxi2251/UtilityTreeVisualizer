@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
         &app,
         []() { QCoreApplication::exit(-1); },
         Qt::QueuedConnection);
-    engine.loadFromModule("QMLModelsViews_Section9", "Main");
+    engine.loadFromModule("UtilityTreeVisualizer", "Main");
 
     return app.exec();
 }

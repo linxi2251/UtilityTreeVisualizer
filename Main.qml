@@ -2,7 +2,7 @@ pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Controls.Fusion
 import QtQuick.Layouts
-import QMLModelsViews_Section9
+import UtilityTreeVisualizer
 
 ApplicationWindow {
   id: root
