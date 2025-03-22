@@ -151,6 +151,7 @@ ApplicationWindow {
     }
   }
 
+
   ColumnLayout {
     anchors.fill: parent
     spacing: 10
@@ -168,16 +169,12 @@ ApplicationWindow {
       // 组件加载完成后展开所有节点
       Component.onCompleted: {
         // 展开可见根节点（索引0）
-        treeView.expand(treeModel.index(0, 0));
-        
-        // 获取根节点模型索引
-        let rootIndex = treeModel.index(0, 0);
-        
-        // 展开所有类别节点
-        for (let i = 0; i < treeModel.rowCount(rootIndex); i++) {
-          let categoryIndex = treeModel.index(i, 0, rootIndex);
-          treeView.expand(categoryIndex);
-        }
+        /**
+          Expands the tree node at the given row in the view recursively down to depth.
+          depth should be relative to the depth of row.
+          If depth is -1, the tree will be expanded all the way down to all leaves
+        */
+        treeView.expandRecursively(0, -1)
       }
     }
 
