@@ -45,6 +45,7 @@ ApplicationWindow {
     }
   }
 
+
   // 删除确认对话框
   Dialog {
     id: deleteConfirmDialog
@@ -58,11 +59,11 @@ ApplicationWindow {
     }
 
     onAccepted: {
-      if (selectedItem) {
-        treeModel.removeItem(selectedItem);
-        selectedItem = null;
+      if (root.selectedItem) {
+        treeModel.removeItem(root.selectedItem);
+        root.selectedItem = null;
         // 清空层级信息
-        currentHierarchyInfo = "";
+        root.currentHierarchyInfo = "";
       }
     }
   }
@@ -107,7 +108,7 @@ ApplicationWindow {
         Layout.fillWidth: true
         icon.source: "qrc:/icons/pipe.png"
         onClicked: {
-          addFeatureType("Pipe")
+          root.addFeatureType("Pipe")
           featureTypePopup.close()
         }
       }
@@ -117,7 +118,7 @@ ApplicationWindow {
         Layout.fillWidth: true
         icon.source: "qrc:/icons/point.png"
         onClicked: {
-          addFeatureType("Point")
+          root.addFeatureType("Point")
           featureTypePopup.close()
         }
       }
@@ -127,7 +128,7 @@ ApplicationWindow {
         Layout.fillWidth: true
         icon.source: "qrc:/icons/area.png"
         onClicked: {
-          addFeatureType("Area")
+          root.addFeatureType("Area")
           featureTypePopup.close()
         }
       }
@@ -139,13 +140,13 @@ ApplicationWindow {
     Layout.fillWidth: true
     height: 30
     color: palette.base
-    visible: currentHierarchyInfo !== ""
+    visible: root.currentHierarchyInfo !== ""
 
     Label {
       anchors.fill: parent
       anchors.leftMargin: 10
       verticalAlignment: Text.AlignVCenter
-      text: currentHierarchyInfo
+      text: root.currentHierarchyInfo
       elide: Text.ElideRight
     }
   }
@@ -201,6 +202,9 @@ ApplicationWindow {
           featureTypePopup.open()
         }
       }
+      Button {
+        Layout.fillWidth: true
+      }
     }
   }
 
@@ -209,19 +213,19 @@ ApplicationWindow {
 
     TreeViewDelegate {
       id: treeViewDelegate
-      width: TreeView.width
+      implicitWidth: treeView.width
       onClicked: {
         console.log("Selected: " + treeViewDelegate.displaying);
-        selectedItem = treeView.index(row, 0);
+        root.selectedItem = treeView.index(row, 0);
         // 更新选中项的深度
         root.selectedItemDepth = treeViewDelegate.depth;
         
         // 使用新的getNodePath方法获取完整路径
-        let nodePath = treeModel.getNodePath(selectedItem);
+        let nodePath = treeModel.getNodePath(root.selectedItem);
         
         if (nodePath.length > 0) {
           // 更新层级信息，显示完整路径
-          currentHierarchyInfo = nodePath.join(" > ");
+          root.currentHierarchyInfo = nodePath.join(" > ");
           
           // 如果是特征绘制类型（depth=2），记录更详细的信息
           if (treeViewDelegate.depth === 2 && nodePath.length >= 3) {
@@ -256,8 +260,6 @@ ApplicationWindow {
       contentItem: RowLayout {
         spacing: 5
         Image {
-          width: 4
-          height: 4
           source: treeViewDelegate.decoration
           fillMode: Image.PreserveAspectFit
         }
@@ -273,7 +275,7 @@ ApplicationWindow {
           visible: treeViewDelegate.childCount > 0
           font.pixelSize: 12
           color: "gray"
-          text: "(" + childCount + ")"
+          text: "(" + treeViewDelegate.childCount + ")"
         }
 
         Button {
@@ -282,10 +284,13 @@ ApplicationWindow {
           visible: treeViewDelegate.childCount == 0
           onClicked: {
             // 更新当前selectedItem以删除当前项
-            selectedItem = treeView.index(row, 0);
+            root.selectedItem = treeView.index(treeViewDelegate.row, 0);
             // 显示确认对话框
             deleteConfirmDialog.open();
           }
+        }
+        Item {
+          Layout.preferredWidth: 10
         }
       }
     }
