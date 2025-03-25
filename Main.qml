@@ -228,7 +228,7 @@ ApplicationWindow {
           if (treeViewDelegate.depth === 2 && nodePath.length >= 3) {
             let featureType = nodePath[2]; // 特征绘制类型
             let category = nodePath[1];    // 类别
-            let rootNode = nodePath[0];        // 根节点
+            let rootNode = nodePath[0];    // 根节点
             
             console.log(`当前特征绘制类型 ${featureType} 属于类别: ${category}, 根节点: ${rootNode}`);
           }
